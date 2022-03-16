@@ -23,34 +23,6 @@ void empilhar(ptr_no pilha);
 void desempilhar(ptr_no pilha);
 void mostrar(ptr_no pilha);
 
-int main(){
-    i=0;
-    pilha = (ptr_no) malloc(sizeof(struct no));
-    strcpy(pilha->tpilha.numero, "Num");
-    strcpy(pilha->tpilha.descricao, "Descricao");
-    strcpy(pilha->tpilha.fornecedor,"Fornecedor\n");
-    pilha->proximo = NULL;
-    do{
-        mostrar(pilha);
-        menu();
-        printf("-O que deseja fazer? ");
-        scanf("%d", &op);
-        switch(op){
-            case 1 : empilhar(pilha); break;
-            case 2 : desempilhar(pilha); break;
-        }
-    }while(op!=0);
-    return 0;
-}
-
-void menu(){
-    printf("\n=======MENU========\n");
-    printf("= 1 - Empilhar    =\n");
-    printf("= 2 - Desimpilhar =\n");
-    printf("= 0 - Sair        =\n");
-    printf("===================\n");
-}
-
 void empilhar(ptr_no pilha){
     if(i == tamanho){
         printf("A pilha esta cheia!\n");
@@ -96,4 +68,32 @@ void mostrar(ptr_no pilha){
         pilha = pilha->proximo;
     }
     printf("%s - %s - %s\n", pilha->tpilha.numero, pilha->tpilha.descricao, pilha->tpilha.fornecedor);
+}
+
+void menu(){
+    printf("\n=======MENU========\n");
+    printf("= 1 - Empilhar    =\n");
+    printf("= 2 - Desimpilhar =\n");
+    printf("= 0 - Sair        =\n");
+    printf("===================\n");
+    printf("Informe a opcao: ");
+}
+
+int main(){
+    i=0;
+    pilha = (ptr_no) malloc(sizeof(struct no));
+    strcpy(pilha->tpilha.numero, "Num");
+    strcpy(pilha->tpilha.descricao, "Descricao");
+    strcpy(pilha->tpilha.fornecedor,"Fornecedor\n");
+    pilha->proximo = NULL;
+    do{
+        mostrar(pilha);
+        menu();
+        scanf("%d", &op);
+        switch(op){
+            case 1 : empilhar(pilha); break;
+            case 2 : desempilhar(pilha); break;
+        }
+    }while(op!=0);
+    return 0;
 }

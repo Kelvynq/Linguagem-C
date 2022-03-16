@@ -1,87 +1,117 @@
 #include<stdio.h>
 #include<stdlib.h>
-#define tamanho 3
+#include<string.h>
+#define tamanho 6
 
-//Estrutura de um no fila
-struct no{
-    int dado;
-    struct no *proximo;
+struct Aluno{
+    char matricula[10];
+    char nome[30];
+    char serie[5];
 };
 
-//Variaveis globais
+struct no{
+    struct  Aluno dados;
+    struct no *ant;
+    struct no *prox;
+};
+
 typedef struct no *ptr_no;
 ptr_no fila;
-int index;
+int cont;
 int op;
 
-//Prototipação
-void menu_mostrar();
-void fila_inserir(ptr_no fila);
-void fila_remover(ptr_no fila);
-void fila_mostrar(ptr_no fila);
+void menu();
+void enfileirar(ptr_no fila);
+void desenfileirar(ptr_no fila);
+void mostrar(ptr_no fila);
+
+void enfileirar(ptr_no fila){
+    if(cont==tamanho){
+        printf("\nA fila esta cheia!\n");
+        system("pause");
+    }
+    else{
+        char matricula[20];
+        char nome [30];
+        char serie[5];
+        printf("Digite a matricula: ");
+        scanf("%s", &matricula);
+        printf("Digite o nome: ");
+        scanf("%s", &nome);
+        printf("Digite a serie: ");
+        scanf("%s", &serie);
+        while (fila->prox!=NULL){
+            fila = fila->prox;
+        }
+        fila->prox= (ptr_no)malloc(sizeof(struct no));
+        fila->prox->ant= fila;
+        fila = fila->prox;
+        strcpy(fila->dados.matricula,matricula);
+        strcpy(fila->dados.nome,nome);
+        strcpy(fila->dados.serie,serie);
+        fila->prox= NULL;
+        cont++;
+    }
+}
 
 int main(){
-    index = 0;
-    fila = (ptr_no)malloc(sizeof(struct no));
-    fila->dado = 0;
-    fila->proximo = NULL;
+    cont= 0;
+    fila=(ptr_no)malloc(sizeof(struct no));
+    strcpy(fila->dados.matricula, " Mat -");
+    strcpy(fila->dados.nome, "Nome -");
+    strcpy(fila->dados.serie, "Serie -\n\n");
+    fila->ant= NULL;
+    fila->prox= NULL;
     do{
-        fila_mostrar(fila);
-        menu_mostrar();
+        mostrar(fila);
+        menu();
         scanf("%d", &op);
         switch(op){
-            case 1: fila_inserir(fila); break;
-            case 2: fila_remover(fila); break;
+        case 1:
+            enfileirar(fila);
+            break;
+        case 2:
+            desenfileirar(fila);
+            break;
         }
-    }while(op!=0);
+    }
+    while(op!=0);
     return 0;
 }
 
-void menu_mostrar(){
-    printf("\nEscolha uma das opcoes:\n");
-    printf("1 - Inserir um elemento no final da Fila\n");
-    printf("2 - Remover um elemento no inicio da Fila\n");
-    printf("0 - Sair\n");
-}
-
-void fila_inserir(ptr_no fila){
-    if(index==tamanho){
-        printf("\nA fila esta cheia, e impossivel de enfileirar\n");
+void desenfileirar(ptr_no fila){
+    if(cont==0){
+        printf("\nA fila esta vazia!\n");
         system("pause");
-    } else{
-        while (fila->proximo!=NULL){// 7 | 8  | 9 | 8 |->
-            fila = fila->proximo; //i++;
+    }
+    else{
+        fila = fila->prox;
+        if(fila->prox==NULL){
+            fila->ant->prox=fila->prox;
         }
-        fila->proximo = (ptr_no)malloc(sizeof(struct no));//ASD00004
-        fila = fila->proximo;
-        printf("Informe um elemento que deseja inserir: ");
-        scanf("%d", &fila->dado);
-        fila->proximo = NULL;
-        index++;
+        else{
+            fila->ant->prox=fila->prox;
+            fila->prox->ant=fila->ant;
+        }
+        cont--;
     }
 }
 
-void fila_remover(ptr_no fila){// 7 | 8  | 9 |->
-    if(index == 0){
-        printf("\nA fila esta vazia, impossivel de desinfileirar\n");
-        system("pause");
-    } else{
-        ptr_no aux;
-        aux = (ptr_no)malloc(sizeof(struct no));
-        aux = fila; //7
-        if(fila->proximo!=NULL){
-            fila = fila->proximo;
-            aux->proximo = fila->proximo;
-        }
-        index--;
-    }
-}
-
-void fila_mostrar(ptr_no fila){
+void mostrar(ptr_no fila){
     system("cls");
-    while(fila->proximo!=NULL){ // 7 | 8  | 9 |->
-        printf("%d ", fila->dado);//7 8 9
-        fila = fila->proximo; //i++;
+    while(fila->prox!=NULL){
+        printf("%s %s %s \n", fila->dados.matricula,fila->dados.nome,fila->dados.serie);
+        fila = fila->prox;
     }
-    printf("%d ", fila->dado);
+    printf("%s %s %s \n", fila->dados.matricula,fila->dados.nome,fila->dados.serie);
+}
+
+void menu()
+{
+    printf("\n=======MENU==========\n");
+    printf("= 1 - Enfileirar    =\n");
+    printf("= 2 - Desenfileirar =\n");
+    printf("= 0 - Sair          =\n");
+    printf("=====================\n");
+    printf("Informe a opcao: ");
 }
